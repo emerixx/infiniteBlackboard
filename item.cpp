@@ -1,7 +1,10 @@
 #include "item.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>
+#include <cstddef>
+#include <iostream>
 
 void itemInit() {
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -16,25 +19,33 @@ void itemQuit() {
 item::item() {
   pos.x = 0;
   pos.y = 0;
-  image = SDL_CreateRGBSurface(0, 600, 400, 16, 0, 0, 0, 0);
-  pos.w = image->clip_rect.w;
-  pos.h = image->clip_rect.h;
-  SDL_FillRect(image, NULL, 0xffff00);
+  image = NULL;
+  pos.w = 100;
+  pos.h = 100;
 }
 
 item::~item() {
   if (image != NULL) {
-    SDL_FreeSurface(image);
+    SDL_DestroyTexture(image);
+    image = NULL;
   }
 }
 
+void item::setRenderer(SDL_Renderer *renderer) { ren = renderer; }
+
 bool item::loadImage(std::string filename) {
   if (image != NULL) {
-    SDL_FreeSurface(image);
+    SDL_DestroyTexture(image);
+    image = NULL;
   }
-  image = IMG_Load(filename.c_str());
-  if (image != NULL) {
-    return true;
+  SDL_Surface *temp = IMG_Load(filename.c_str());
+  if (temp != NULL) {
+    image = SDL_CreateTextureFromSurface(ren, temp);
+    SDL_FreeSurface(temp);
+    if (image != NULL) {
+
+      return true;
+    }
   } else {
     return false;
   }
@@ -42,8 +53,10 @@ bool item::loadImage(std::string filename) {
   return 0;
 }
 
-void item::draw(SDL_Surface *dest) {
+void item::draw() {
   if (image != NULL) {
-    SDL_BlitSurface(image, NULL, dest, &pos);
+    SDL_RenderCopy(ren, image, NULL, &pos);
+  } else if (image == NULL) {
+    std::cout << "something is fucked (item.cpp, item::draw())\n";
   }
 }

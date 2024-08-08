@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>
 #include <string>
 
@@ -14,11 +15,13 @@ class item {
 public:
   item();
   virtual ~item();
+  void setRenderer(SDL_Renderer *renderer);
   bool loadImage(std::string filename);
-  void draw(SDL_Surface *dest);
+  void draw();
 
 private:
-  SDL_Surface *image;
+  SDL_Renderer *ren;
+  SDL_Texture *image;
   SDL_Rect pos;
 };
 
