@@ -1,6 +1,7 @@
 #include "item.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_rect.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_surface.h>
 #include <cstddef>
@@ -17,8 +18,8 @@ void itemQuit() {
 }
 
 item::item() {
-  pos.x = 0;
-  pos.y = 0;
+  pos.x = 50;
+  pos.y = 50;
   image = NULL;
   pos.w = 100;
   pos.h = 100;
@@ -53,8 +54,31 @@ bool item::loadImage(std::string filename) {
   return 0;
 }
 
+void item::setSize(int w, int h) {
+  pos.w = w;
+  pos.h = h;
+}
+void item::setPos(int x, int y) {
+  pos.x = x;
+  pos.y = y;
+}
+void item::move(int x, int y) {
+  pos.x += x;
+  pos.y += y;
+}
+void item::draw(double angle) {
+  if (image != NULL) {
+    SDL_Point pt;
+    pt.x = pos.w / 2 + pos.x;
+    pt.y = pos.h / 2 + pos.y;
+    SDL_RenderCopyEx(ren, image, NULL, &pos, angle, &pt, SDL_FLIP_NONE);
+  } else if (image == NULL) {
+    std::cout << "something is fucked (item.cpp, item::draw(double angle))\n";
+  }
+}
 void item::draw() {
   if (image != NULL) {
+
     SDL_RenderCopy(ren, image, NULL, &pos);
   } else if (image == NULL) {
     std::cout << "something is fucked (item.cpp, item::draw())\n";
