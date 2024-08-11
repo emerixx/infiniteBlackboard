@@ -14,6 +14,7 @@ void itemQuit();
 class item {
 public:
   item();
+  void createBlank(int r, int g, int b);
   virtual ~item();
   void setRenderer(SDL_Renderer *renderer);
   bool loadImage(std::string filename);
@@ -21,6 +22,7 @@ public:
   void setPos(int x, int y);
   void move(int x, int y);
   void draw(double angle);
+  void drawPixel(int x, int y);
   void draw();
 
 private:

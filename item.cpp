@@ -25,6 +25,12 @@ item::item() {
   pos.h = 100;
 }
 
+void item::createBlank(int r, int b, int g) {
+  SDL_Surface *surf =
+      SDL_CreateRGBSurface(r, g, b, 32, pos.x, pos.y, pos.w, pos.h);
+  image = SDL_CreateTextureFromSurface(ren, surf);
+}
+
 item::~item() {
   if (image != NULL) {
     SDL_DestroyTexture(image);
@@ -75,6 +81,15 @@ void item::draw(double angle) {
   } else if (image == NULL) {
     std::cout << "something is fucked (item.cpp, item::draw(double angle))\n";
   }
+}
+void item::drawPixel(int x, int y) {
+  SDL_Rect rect;
+  rect.x = x + pos.x;
+  rect.y = y + pos.y;
+  rect.w = 1;
+  rect.h = 1;
+
+  SDL_RenderCopy(ren, image, NULL, &rect);
 }
 void item::draw() {
   if (image != NULL) {
