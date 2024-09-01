@@ -1,71 +1,76 @@
-#include "item.h"
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_keycode.h>
-#include <SDL2/SDL_mouse.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_video.h>
 #include <iostream>
+#include <raylib.h>
 
-int winWidth = 1400;
-int winHeight = 1200;
-int imgWidthMultiply = 1;
-int imgHeightMultiply = 1;
-int main() {
+const int windowWidth = 2400;
+const int windowHeight = 1400;
+const int textureSizeMultiplier = 2;
+const Vector2 startTexturePos = {
+    -windowWidth * (textureSizeMultiplier - 1) / 2.0,
+    -windowHeight *(textureSizeMultiplier - 1) / 2.0};
+const char *imgToLoad = "./imgs/blank.png";
+const Color backgroundColor = {0, 0, 0, 255};
+float size = 1;
+bool isShiftDown = false;
+Vector2 texturePos = startTexturePos;
+Vector2 mousePos;
+Vector2 mousePos_old;
+int main(void) {
 
-  SDL_Init(SDL_INIT_EVERYTHING);
-  SDL_Window *win = SDL_CreateWindow("Infinite blackboard", 100, 50, winWidth,
-                                     winHeight, SDL_WINDOW_SHOWN);
-  SDL_Renderer *screen = SDL_CreateRenderer(win, -1, 0);
+  InitWindow(windowWidth, windowHeight, "infinite blackboard");
+  // SetTargetFPS(120);
+  RenderTexture2D target =
+      LoadRenderTexture(windowWidth * textureSizeMultiplier,
+                        windowHeight * textureSizeMultiplier);
+  BeginTextureMode(target);
+  ClearBackground(BLACK);
+  EndTextureMode();
+  while (!WindowShouldClose()) // Detect window close button or ESC key
+  {
 
-  item image;
-  image.setRenderer(screen);
-  image.setSize(imgWidthMultiply * winWidth, imgHeightMultiply * winHeight);
-  // test.setPos(-imgWidthMultiply * winWidth / imgWidthMultiply,
-  //             -winHeight * imgHeightMultiply / imgHeightMultiply);
-  image.setPos(-winWidth * (imgWidthMultiply - 1) / 2,
-               -winHeight * (imgHeightMultiply - 1) / 2);
-  image.loadImage("./blank.png");
-  // image.createBlank(100, 100, 100);
-  bool run = true;
-  int x, y = 0;
-  while (run) {
-    SDL_Event ev;
-    while (SDL_PollEvent(&ev)) {
-      switch (ev.type) {
-      case SDL_QUIT:
-        run = false;
-        break;
-      case SDL_KEYDOWN:
-        switch (ev.key.keysym.sym) {
-        case SDLK_UP:
-          image.move(0, 10);
-          break;
-        case SDLK_DOWN:
-          image.move(0, -10);
-          break;
-        case SDLK_LEFT:
-          image.move(10, 0);
-          break;
-        case SDLK_RIGHT:
-          image.move(-10, 0);
-          break;
-        }
-      }
+    mousePos = GetMousePosition();
+    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+      BeginTextureMode(target);
+      std::cout << mousePos.x << ":" << mousePos.y << "\n";
+      DrawCircle(mousePos.x - texturePos.x, mousePos.y - texturePos.y, 1,
+                 WHITE);
+      EndTextureMode();
     }
-    image.draw();
-    if (SDL_GetMouseState(&x, &y)) {
-
-      image.drawPixel(x, y);
-
-      std::cout << "x: " << x << " y: " << y << "\n";
+    if (IsKeyDown(KEY_UP)) {
+      texturePos.y++;
     }
-    SDL_RenderPresent(screen);
-    SDL_RenderClear(screen); // clear screen
+    if (IsKeyDown(KEY_DOWN)) {
+      texturePos.y--;
+    }
+    if (IsKeyDown(KEY_LEFT)) {
+      texturePos.x++;
+    }
+    if (IsKeyDown(KEY_RIGHT)) {
+      texturePos.x--;
+    }
+    if (IsKeyDown(KEY_LEFT_SHIFT)) {
+      isShiftDown = true;
+    } else {
+      isShiftDown = false;
+    }
+    if (IsKeyDown(KEY_C) && isShiftDown) {
+      BeginTextureMode(target);
+      ClearBackground(BLACK);
+      EndTextureMode();
+    }
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+
+    DrawTextureRec(target.texture,
+                   (Rectangle){0, 0, (float)target.texture.width,
+                               (float)-target.texture.height},
+                   (Vector2){texturePos.x, texturePos.y}, WHITE);
+
+    // DrawTexture(target.texture, 0, 0, WHITE);
+
+    EndDrawing();
+    std::cout << GetFPS() << "\n";
   }
-
-  SDL_DestroyWindow(win);
-  SDL_Quit();
+  UnloadRenderTexture(target);
+  CloseWindow();
   return 0;
 }

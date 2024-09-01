@@ -1,2 +1,2 @@
 all:
-	g++ -lSDL2 -lSDL2_image main.cpp item.cpp -o infBlackboard.out
+	g++ -o infiniteBlackboard.out main.cpp -lraylib
