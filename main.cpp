@@ -9,15 +9,15 @@ const Vector2 startTexturePos = {
     -windowHeight *(textureSizeMultiplier - 1) / 2.0};
 const char *imgToLoad = "./imgs/blank.png";
 const Color backgroundColor = {0, 0, 0, 255};
-float size = 1;
+int radius = 1;
 bool isShiftDown = false;
+bool wasRMBDown = false;
 Vector2 texturePos = startTexturePos;
 Vector2 mousePos;
 Vector2 mousePos_old;
 int main(void) {
 
   InitWindow(windowWidth, windowHeight, "infinite blackboard");
-  // SetTargetFPS(120);
   RenderTexture2D target =
       LoadRenderTexture(windowWidth * textureSizeMultiplier,
                         windowHeight * textureSizeMultiplier);
@@ -26,12 +26,26 @@ int main(void) {
   EndTextureMode();
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
-
+    mousePos_old = mousePos;
     mousePos = GetMousePosition();
+    radius += GetMouseWheelMove();
+    if (radius < 1)
+      radius = 1;
+    if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+
+      if (wasRMBDown) {
+        texturePos.x += mousePos.x - mousePos_old.x;
+        texturePos.y += mousePos.y - mousePos_old.y;
+      }
+
+      wasRMBDown = true;
+    } else {
+      wasRMBDown = false;
+    }
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
       BeginTextureMode(target);
       std::cout << mousePos.x << ":" << mousePos.y << "\n";
-      DrawCircle(mousePos.x - texturePos.x, mousePos.y - texturePos.y, 1,
+      DrawCircle(mousePos.x - texturePos.x, mousePos.y - texturePos.y, radius,
                  WHITE);
       EndTextureMode();
     }
@@ -58,7 +72,7 @@ int main(void) {
       EndTextureMode();
     }
     BeginDrawing();
-    ClearBackground(RAYWHITE);
+    ClearBackground(GRAY);
 
     DrawTextureRec(target.texture,
                    (Rectangle){0, 0, (float)target.texture.width,
