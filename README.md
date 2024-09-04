@@ -1,7 +1,7 @@
 Keybinds:
   ---MODES---
   KEY_LEFT_SHIFT - Shift mode (SM)
-  KEY_LEFT_CTRL - CTRL mode (CM)
+  KEY_LEFT_CTRL - Ctrl mode (CM)
   KEY_E - Eraser mode (draws background color) (EM)
   KEY_C - Change color mode (CCM)
   KEY_D - IF CM: toggle debug mode (show debug info)
@@ -16,12 +16,20 @@ Keybinds:
   KEY_LEFT - move surface 1/2 window width right
   KEY_RIGHT - move surface 1/2 window width left
 
-| Type   | Keybind        | Action                     |
-| :----- | :------------: | -------------------------: |
-| Mode   | KEY_LEFT_SHIFT | And this is right-aligned  |
-| Mode   | KEY_LEFT_CTRL  | And even more to the right |
-| Mode   | KEY_E          | And this is right-aligned  |
-| Mode   | KEY_C          | And even more to the right |
-| Mode   | KEY_D          | And even more to the right |
-| Mouse  | MOUSE_BUTTON_RIGHT (down)  | And even more to the right |
-  
+| Type      | Keybind        | Action                                     |
+| :-----    | :------------: | -----------------------------------------: |
+| Mode      | KEY_LEFT_SHIFT | Shift mode (SM)                            |
+| Mode      | KEY_LEFT_CTRL  | Ctrl mode (CM)                             |
+| Mode      | KEY_E          | Eraser mode (draws background color) (EM)  |
+| Mode      | KEY_C          | Change color mode (CCM)                    |
+| Mode      | KEY_D          | IF CM: toggle debug mode (show debug info) |
+| ---       | ---            | ---                                        |
+| Keyboard  | KEY_D          | IF SM: clear surface                       |
+| Keyboard  | KEY_UP         | IF CCM: next color. ELSE: move surface win height/2 down |
+| Keyboard  | KEY_DOWN       | IF CCM: prev color. ELSE: move surface win height/2 up |
+| Keyboard  | KEY_LEFT       | move surface 1/2 window width right        |
+| Keyboard  | KEY_RIGHT      | move surface 1/2 window width left         |
+| ---       | ---            | ---                                        |
+| Mouse     | MOUSE_BUTTON_RIGHT (down)  | And even more to the right |
+| Mouse     | MOUSE_BUTTON_RIGHT (press)  | And even more to the right |
+| Mouse     | MOUSE_BUTTON_LEFT (down)  | And even more to the right |
