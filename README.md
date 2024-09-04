@@ -1,6 +1,6 @@
 Keybinds:
   ---MODES---
-  KEY_LEFT_SHIFT - Shift mode (SM)
+  KEY_LEFT_SHIFT - Shift mode (SM)\n
   KEY_LEFT_CTRL - CTRL mode (CM)
   KEY_E - Eraser mode (draws background color) (EM)
   KEY_C - Change color mode (CCM)
