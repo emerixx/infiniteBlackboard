@@ -17,7 +17,7 @@ Keybinds:
   KEY_RIGHT - move surface 1/2 window width left
 
 | Type      | Keybind        | Action                                     |
-| :-----    | :------------: | -----------------------------------------: |
+| :----:    | :------------: | :----------------------------------------: |
 | Mode      | KEY_LEFT_SHIFT | Shift mode (SM)                            |
 | Mode      | KEY_LEFT_CTRL  | Ctrl mode (CM)                             |
 | Mode      | KEY_E          | Eraser mode (draws background color) (EM)  |
@@ -30,6 +30,6 @@ Keybinds:
 | Keyboard  | KEY_LEFT       | move surface 1/2 window width right        |
 | Keyboard  | KEY_RIGHT      | move surface 1/2 window width left         |
 | ---       | ---            | ---                                        |
-| Mouse     | MOUSE_BUTTON_RIGHT (down)  | And even more to the right |
-| Mouse     | MOUSE_BUTTON_RIGHT (press)  | And even more to the right |
-| Mouse     | MOUSE_BUTTON_LEFT (down)  | And even more to the right |
+| Mouse     | MOUSE_BUTTON_RIGHT (down)   | Move the drawing surface      |
+| Mouse     | MOUSE_BUTTON_RIGHT (press)  | IF CCM: go to next available color |
+| Mouse     | MOUSE_BUTTON_LEFT (down)    | Draw using current color      | 
